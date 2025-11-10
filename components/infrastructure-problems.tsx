@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useOutsideClick } from '@/hooks/use-outside-click';
+import Image from 'next/image';
 
-// Icon placeholder - you can replace with actual images or keep emojis
 const problemCards = [
 	{
 		description: 'Infraestrutura Urbana',
@@ -147,15 +147,17 @@ const problemCards = [
 	},
 ];
 
+type ProblemCard = (typeof problemCards)[number];
+
 export default function InfrastructureProblems() {
-	const [active, setActive] = useState<>(null);
+	const [active, setActive] = useState<ProblemCard | null>(null);
 	const id = useId();
 	const ref = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		function onKeyDown(event: KeyboardEvent) {
 			if (event.key === 'Escape') {
-				setActive(false);
+				setActive(null);
 			}
 		}
 
@@ -169,7 +171,9 @@ export default function InfrastructureProblems() {
 		return () => window.removeEventListener('keydown', onKeyDown);
 	}, [active]);
 
-	useOutsideClick(ref, () => setActive(null));
+	useOutsideClick(ref as React.RefObject<HTMLDivElement>, () =>
+		setActive(null)
+	);
 
 	return (
 		<>
@@ -212,7 +216,7 @@ export default function InfrastructureProblems() {
 							className='w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden'
 						>
 							<motion.div layoutId={`image-${active.title}-${id}`}>
-								<img
+								<Image
 									width={200}
 									height={200}
 									src={active.src}
@@ -266,7 +270,7 @@ export default function InfrastructureProblems() {
 					>
 						<div className='flex gap-4 flex-col w-full'>
 							<motion.div layoutId={`image-${card.title}-${id}`}>
-								<img
+								<Image
 									width={100}
 									height={100}
 									src={card.src}
