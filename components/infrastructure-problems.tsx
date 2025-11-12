@@ -271,8 +271,8 @@ export default function InfrastructureProblems() {
 						<div className='flex gap-4 flex-col w-full'>
 							<motion.div layoutId={`image-${card.title}-${id}`}>
 								<Image
-									width={100}
-									height={100}
+									width={300}
+									height={300}
 									src={card.src}
 									alt={card.title}
 									className='h-60 w-full rounded-lg object-cover object-center'
